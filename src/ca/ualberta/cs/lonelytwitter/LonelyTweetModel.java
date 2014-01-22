@@ -36,6 +36,9 @@ public abstract class LonelyTweetModel {
 		this.timestamp = new Date();
 	}
 
+	public String toString(){
+		return getText();
+	}
 	
 
 	public abstract void setImportant(boolean important) throws Exception;

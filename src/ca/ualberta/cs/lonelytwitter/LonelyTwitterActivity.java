@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,7 +24,8 @@ public class LonelyTwitterActivity extends Activity {
 	private static final String FILENAME = "file.sav";
 	private EditText bodyText;
 	private ListView oldTweetsList;
-	
+	private ArrayAdapter<String> adapter = null;
+	private List<String> list2;
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,9 @@ public class LonelyTwitterActivity extends Activity {
 				setResult(RESULT_OK);
 				String text = bodyText.getText().toString();
 				saveInFile(text, new Date(System.currentTimeMillis()));
-				finish();
-
+				//onStart();
+				list2.add(text);
+				adapter.notifyDataSetChanged();
 			}
 		});
 	}
@@ -50,14 +53,15 @@ public class LonelyTwitterActivity extends Activity {
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		String[] tweets = loadFromFile();
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				R.layout.list_item, tweets);
+		List<String> tweets = (List<String>) loadFromFile();
+		adapter = new ArrayAdapter<String>(this,R.layout.list_item, tweets);
 		oldTweetsList.setAdapter(adapter);
+
 	}
 
-	private String[] loadFromFile() {
-		ArrayList<String> tweets = new ArrayList<String>();
+	private List<String> loadFromFile() {
+		List<String> tweets = new ArrayList<String>();
+		list2 = tweets;
 		try {
 			FileInputStream fis = openFileInput(FILENAME);
 			BufferedReader in = new BufferedReader(new InputStreamReader(fis));
@@ -74,8 +78,11 @@ public class LonelyTwitterActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return tweets.toArray(new String[tweets.size()]);
+		return (List<String>) tweets;
 	}
+	
+	
+	
 	
 	private void saveInFile(String text, Date date) {
 		try {

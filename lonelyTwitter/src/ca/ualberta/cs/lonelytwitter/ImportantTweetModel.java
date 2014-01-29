@@ -5,7 +5,7 @@ import java.util.Date;
 public class ImportantTweetModel extends LonelyTweetModel {
 
 	public ImportantTweetModel(String text, Date timestamp) {
-		super(text, timestamp);
+		super("Important!: "+text, timestamp);
 	}
 
 	public ImportantTweetModel(String text) {
@@ -13,7 +13,7 @@ public class ImportantTweetModel extends LonelyTweetModel {
 	}
 	
 	public String getText() {
-		return "Important! " + super.getText();
+		return super.getText();
 	}
 
 	@Override
